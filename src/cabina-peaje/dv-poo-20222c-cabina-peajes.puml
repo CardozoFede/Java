@@ -1,0 +1,111 @@
+@startuml
+
+package domain {
+
+class Concesion{
+estaciones
+
+ +cabinasConEfectivo() -->estaciones.cabinasConEfectivo
+addEstacion()
+}
+ class Estacion{
+ -id 
+ -nombre
+ -cabinas
+ 
+ +cabinasConEfectivo() -->lista cabinas 
+ +dameHoraActual()
+ addCabina(estacion, ,medioPago)
+ +promedioDemora() -->recorre las cabinas y por cada una calcula cabina.diasDemora()
+ 
+ 
+}
+
+class Cabina{
+-id
+-estacion
+-medioPago
+-registros
+
++Cobrar(vehiculo)
++addRegistro(vehiculo, cabina, estacion. dameHoraActual())
+}
+
+
+abstract class MedioPago{
+-descripcion
+-diasDemora
+
++(abstract) descuento() 
+}
+
+Class Sube {
+diasDemora <-?
+descuento()
+}
+
+Class Pase{
+diasDemora <-?
+descuento() -> 15 si <5 o 12 si >= 5
+}
+
+Class Efectivo {
+diasDemora <- 0
+descuento() -> 0
+}
+
+Class Registro{
+fecha
+hora
+cabina
+vehiculo
+
+getMontACobrar()
+}
+
+Class Vehiculo{
+patente
+categoria
+}
+
+enum CategoriaVehiculo{
+-precio
+
++AUTO[100],
++MOTO[50],
++CAMION[500]
+
+-CategoriaVehiculo(precio)
++getPrecio()
+
+}
+
+Concesion--Estacion
+Estacion--Cabina
+Cabina--MedioPago
+MedioPago<|--Sube
+MedioPago<|--Pase
+MedioPago<|--Efectivo
+
+
+
+Registro--Cabina
+Registro--Vehiculo
+
+Vehiculo--CategoriaVehiculo
+
+}
+
+package test {
+class ConcesionTest{
+main()
+}
+
+ConcesionTest..Concesion
+
+}
+
+
+
+
+@enduml
